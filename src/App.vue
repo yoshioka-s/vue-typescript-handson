@@ -1,15 +1,21 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     <nav class="navbar navbar-light bg-light navbar-expand-lg">
       <a href="/" class="navbar-brand">
         <h1>席替え番長</h1>
       </a>
     </nav>
     <div class="row page">
-      <div class="col-sm-8">
-        <h2>メンバー {{ members.length }}人</h2>
-        <ul>
-          <li v-for="(member, i) in sortedMembers" v-bind:key="i">
+      <div class="col-sm-8 row">
+        <h2 class="col-sm-12">メンバー {{ members.length }}人</h2>
+        <ul class="col-sm-6">
+          <li v-for="(member, i) in girls" v-bind:key="i">
+            <i class="fa" v-bind:class="ICONS[member.sex]"></i>
+            {{ member.name }}
+          </li>
+        </ul>
+        <ul class="col-sm-6">
+          <li v-for="(member, i) in boys" v-bind:key="i">
             <i class="fa" v-bind:class="ICONS[member.sex]"></i>
             {{ member.name }}
           </li>
@@ -78,6 +84,12 @@ export default class App extends Vue {
     // membersをordering順に並べて返す
     return _.sortBy(this.members, 'ordering');
   }
+  get girls(): MemberInterface[] {
+    return _.filter(this.sortedMembers, { sex: '女' });
+  }
+  get boys(): MemberInterface[] {
+    return _.filter(this.sortedMembers, { sex: '男' });
+  }
   get formattedName(): string {
     if (!this.form.name) {
       return '';
@@ -94,7 +106,6 @@ export default class App extends Vue {
       ordering: this.members.length,
     });
     this.members.push(newMember);
-    // フォームをリセット
     this.form.name = '';
   }
   public shuffle(): void {
@@ -112,7 +123,6 @@ export default class App extends Vue {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
