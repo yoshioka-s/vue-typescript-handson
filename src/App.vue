@@ -100,19 +100,38 @@ export default class App extends Vue {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 50px;
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+.page {
+  min-height: 300px;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+.radio-wrapper {
+  display: inline-block;
+  margin-right: 1em;
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.radio-wrapper:last-of-type {
+  margin-right: 0;
+}
+
+.radio-wrapper input {
+  margin-right: 0.5em;
+}
+
+.fa-mars {
+  color: #03328b;
+}
+
+.fa-venus {
+  color: #eb90c8;
+}
+
+.member-form {
+  background-color: #e0e0e0;
+  padding: 15px;
+  border-radius: 15px;
 }
 </style>
