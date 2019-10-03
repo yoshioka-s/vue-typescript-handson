@@ -8,18 +8,8 @@
     <div class="row page">
       <div class="col-sm-8 row">
         <h2 class="col-sm-12">メンバー {{ members.length }}人</h2>
-        <ul class="col-sm-6">
-          <li v-for="(member, i) in girls" v-bind:key="i">
-            <i class="fa" v-bind:class="ICONS[member.sex]"></i>
-            {{ member.name }}
-          </li>
-        </ul>
-        <ul class="col-sm-6">
-          <li v-for="(member, i) in boys" v-bind:key="i">
-            <i class="fa" v-bind:class="ICONS[member.sex]"></i>
-            {{ member.name }}
-          </li>
-        </ul>
+        <member-list class="col-sm-6" :members="girls"></member-list>
+        <member-list class="col-sm-6" :members="boys"></member-list>
         <button v-if="members.length > 0" v-on:click="shuffle" class="btn btn-success">席替え</button>
       </div>
 
@@ -43,8 +33,6 @@
           <div class="form-group">
             <label for="name">名前</label>
             <input id="name" class="form-control" v-model="form.name" />
-            <p>{{ form.name }}</p>
-            <p>{{ formattedName }}</p>
           </div>
           <div class="form-group">
             <input type="submit" class="btn btn-primary" value="作成" />
@@ -56,17 +44,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import _ from 'lodash';
+import { sexString, MemberInterface } from '@/interfaces/Member';
+import MemberList from '@/components/MemberList.vue';
 
-type sexString = '女' | '男';
-interface MemberInterface {
-  name: string;
-  sex: sexString;
-  ordering: number;
-}
-
-@Component
+@Component({
+  components: {
+    MemberList,
+  },
+})
 export default class App extends Vue {
   public form: MemberInterface = {
     name: '',
@@ -74,10 +61,6 @@ export default class App extends Vue {
     ordering: 0,
   };
   public members: MemberInterface[] = [];
-  public ICONS = {
-    男: 'fa-mars',
-    女: 'fa-venus',
-  };
   public SEX_OPTIONS: sexString[] = ['女', '男'];
 
   get sortedMembers(): MemberInterface[] {
@@ -89,12 +72,6 @@ export default class App extends Vue {
   }
   get boys(): MemberInterface[] {
     return _.filter(this.sortedMembers, { sex: '男' });
-  }
-  get formattedName(): string {
-    if (!this.form.name) {
-      return '';
-    }
-    return this.form.name + (this.form.sex === '女' ? 'ちゃん' : 'くん');
   }
 
   public changeSex(option: sexString): void {
