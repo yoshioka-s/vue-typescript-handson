@@ -121,14 +121,6 @@ export default class App extends Vue {
   margin-right: 0.5em;
 }
 
-.fa-mars {
-  color: #03328b;
-}
-
-.fa-venus {
-  color: #eb90c8;
-}
-
 .member-form {
   background-color: #e0e0e0;
   padding: 15px;

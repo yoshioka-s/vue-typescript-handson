@@ -22,3 +22,13 @@ export default class MemberList extends Vue {
   };
 }
 </script>
+
+<style lang="stylus">
+.fa-mars {
+  color: #03328b;
+}
+
+.fa-venus {
+  color: #eb90c8;
+}
+</style>
