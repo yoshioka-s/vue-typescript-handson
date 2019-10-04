@@ -15,29 +15,7 @@
 
       <div class="col-sm-4">
         <h2>メンバー追加</h2>
-        <form class="member-form" v-on:submit.prevent="save">
-          <div class="form-group">
-            <label for="sex">性別</label>
-            <br />
-            <p v-for="option in SEX_OPTIONS" :key="option" class="radio-wrapper">
-              <input
-                type="radio"
-                name="sex"
-                v-bind:value="option"
-                v-on:change="changeSex(option)"
-                v-bind:checked="option === form.sex"
-              />
-              {{ option }}
-            </p>
-          </div>
-          <div class="form-group">
-            <label for="name">名前</label>
-            <input id="name" class="form-control" v-model="form.name" />
-          </div>
-          <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="作成" />
-          </div>
-        </form>
+        <member-form @addMember="save"></member-form>
       </div>
     </div>
   </div>
@@ -46,22 +24,18 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import _ from 'lodash';
-import { sexString, MemberInterface } from '@/interfaces/Member';
+import { MemberInterface } from '@/interfaces/Member';
 import MemberList from '@/components/MemberList.vue';
+import MemberForm from '@/components/MemberForm.vue';
 
 @Component({
   components: {
     MemberList,
+    MemberForm,
   },
 })
 export default class App extends Vue {
-  public form: MemberInterface = {
-    name: '',
-    sex: '女',
-    ordering: 0,
-  };
   public members: MemberInterface[] = [];
-  public SEX_OPTIONS: sexString[] = ['女', '男'];
 
   get sortedMembers(): MemberInterface[] {
     // membersをordering順に並べて返す
@@ -74,16 +48,12 @@ export default class App extends Vue {
     return _.filter(this.sortedMembers, { sex: '男' });
   }
 
-  public changeSex(option: sexString): void {
-    this.form.sex = option;
-  }
-  public save(): void {
+  public save(member: MemberInterface): void {
     // orderingで席順を管理。新メンバーは最後尾
-    const newMember = Object.assign({}, this.form, {
+    const newMember = Object.assign({}, member, {
       ordering: this.members.length,
     });
     this.members.push(newMember);
-    this.form.name = '';
   }
   public shuffle(): void {
     _(this.members)
@@ -106,24 +76,5 @@ export default class App extends Vue {
 
 .page {
   min-height: 300px;
-}
-
-.radio-wrapper {
-  display: inline-block;
-  margin-right: 1em;
-}
-
-.radio-wrapper:last-of-type {
-  margin-right: 0;
-}
-
-.radio-wrapper input {
-  margin-right: 0.5em;
-}
-
-.member-form {
-  background-color: #e0e0e0;
-  padding: 15px;
-  border-radius: 15px;
 }
 </style>
