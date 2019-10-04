@@ -7,11 +7,12 @@
         <input
           type="radio"
           name="sex"
+          :id="option"
           v-bind:value="option"
           v-on:change="changeSex(option)"
           v-bind:checked="option === form.sex"
         />
-        {{ option }}
+        <label :for="option">{{ option }}</label>
       </p>
     </div>
     <div class="form-group">
