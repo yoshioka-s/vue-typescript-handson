@@ -29,6 +29,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { sexString, MemberInterface } from '@/interfaces/Member';
 
+@Component
 export default class MemberForm extends Vue {
   public form: MemberInterface = {
     name: '',
