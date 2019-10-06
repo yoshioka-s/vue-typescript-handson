@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import MemberForm from '@/views/MemberForm.vue';
+import MemberLists from '@/views/MemberLists.vue';
 
 Vue.use(Router);
 
@@ -12,6 +14,16 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home,
+    },
+    {
+      path: '/form',
+      name: 'form',
+      component: MemberForm,
+    },
+    {
+      path: '/lists',
+      name: 'lists',
+      component: MemberLists,
     },
     {
       path: '/about',

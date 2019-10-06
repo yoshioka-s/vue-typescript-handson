@@ -4,20 +4,10 @@
       <a href="/" class="navbar-brand">
         <h1>席替え番長</h1>
       </a>
+      <router-link :to="{name: 'form'}">Form</router-link>
+      <router-link :to="{name: 'lists'}">Lists</router-link>
     </nav>
-    <div class="row page">
-      <div class="col-sm-8 row">
-        <h2 class="col-sm-12">メンバー {{ members.length }}人</h2>
-        <member-list class="col-sm-6" :members="girls"></member-list>
-        <member-list class="col-sm-6" :members="boys"></member-list>
-        <button v-if="members.length > 0" v-on:click="shuffle" class="btn btn-success">席替え</button>
-      </div>
-
-      <div class="col-sm-4">
-        <h2>メンバー追加</h2>
-        <member-form @addMember="save"></member-form>
-      </div>
-    </div>
+    <router-view class="page"></router-view>
   </div>
 </template>
 
@@ -26,27 +16,10 @@ import { Component, Vue } from 'vue-property-decorator';
 import _ from 'lodash';
 import { MemberInterface } from '@/interfaces/Member';
 import MemberList from '@/components/MemberList.vue';
-import MemberForm from '@/components/MemberForm.vue';
 
-@Component({
-  components: {
-    MemberList,
-    MemberForm,
-  },
-})
+@Component({})
 export default class App extends Vue {
   public members: MemberInterface[] = [];
-
-  get sortedMembers(): MemberInterface[] {
-    // membersをordering順に並べて返す
-    return _.sortBy(this.members, 'ordering');
-  }
-  get girls(): MemberInterface[] {
-    return _.filter(this.sortedMembers, { sex: '女' });
-  }
-  get boys(): MemberInterface[] {
-    return _.filter(this.sortedMembers, { sex: '男' });
-  }
 
   public save(member: MemberInterface): void {
     // orderingで席順を管理。新メンバーは最後尾
