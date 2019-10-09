@@ -53,42 +53,40 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import _ from 'lodash';
 
-type sexString = '女' | '男';
+type SexString = '女' | '男';
 interface MemberInterface {
   name: string;
-  sex: sexString;
-  ordering: number;
+  sex: SexString;
+  ordering?: number;
 }
 
 @Component
 export default class App extends Vue {
-  public form: MemberInterface = {
-    name: '',
-    sex: '女',
-    ordering: 0,
-  };
-  public members: MemberInterface[] = [];
-  public ICONS = {
-    男: 'fa-mars',
-    女: 'fa-venus',
-  };
-  public SEX_OPTIONS: sexString[] = ['女', '男'];
-
-  get sortedMembers(): MemberInterface[] {
+  private get sortedMembers(): MemberInterface[] {
     // membersをordering順に並べて返す
     return _.sortBy(this.members, 'ordering');
   }
-  get formattedName(): string {
+  private get formattedName(): string {
     if (!this.form.name) {
       return '';
     }
     return this.form.name + (this.form.sex === '女' ? 'ちゃん' : 'くん');
   }
+  private form: MemberInterface = {
+    name: '',
+    sex: '女',
+  };
+  private members: MemberInterface[] = [];
+  private readonly SEX_OPTIONS: SexString[] = ['女', '男'];
+  private readonly ICONS = {
+    男: 'fa-mars',
+    女: 'fa-venus',
+  };
 
-  public changeSex(option: sexString): void {
+  private changeSex(option: SexString): void {
     this.form.sex = option;
   }
-  public save(): void {
+  private save(): void {
     // orderingで席順を管理。新メンバーは最後尾
     const newMember = Object.assign({}, this.form, {
       ordering: this.members.length,
@@ -97,7 +95,7 @@ export default class App extends Vue {
     // フォームをリセット
     this.form.name = '';
   }
-  public shuffle(): void {
+  private shuffle(): void {
     _(this.members)
       // this.membersの配列順をシャッフル
       .shuffle()
